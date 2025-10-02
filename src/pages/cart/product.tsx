@@ -1,0 +1,72 @@
+import { useCart } from "react-use-cart";
+import { Button } from "../../components/button";
+import { toMoney } from "../../lib/util";
+
+export const Product = ({
+    description, id, name, price, quantity, image
+}: Props) => {
+
+    const { updateItemQuantity, getItem } = useCart();
+
+    const Inc = () => {
+        updateItemQuantity(id.toString(), quantity + 1)
+    }
+
+    const Dnc = () => {
+        updateItemQuantity(id.toString(), quantity - 1)
+    }
+
+    const totalPrice = getItem(id.toString())?.price * 
+        getItem(id.toString())?.quantity;
+
+    return <li>
+        <div className="flex items-center gap-10">
+            <div className="w-80 overflow-hidden">
+                <img 
+                    src={image}
+                    alt={name}
+                    className="w-fit h-full object-cover"
+                />
+            </div>
+
+                <div className="cpase-y-2">
+                    <h3 className="text-lg font-extrabold">
+                        {name}
+                    </h3>
+
+                    <p className="text-base font-light">
+                        {description}
+                    </p>
+
+                    <div className="flex gap-2 items-center">
+                        <Button onClick={Inc} color="white">
+                            +
+                        </Button>
+
+                        <big>{toMoney(price)}</big>
+                        
+                        <Button onClick={Dnc} color="white">
+                            -
+                        </Button>
+
+                        <p>
+                            Итого: {totalPrice}
+                        </p>
+
+                    </div>
+                </div>
+
+        </div>
+    </li>
+
+    
+}
+
+interface Props {
+    id: number;
+    name: string;
+    description: number;
+    price: number;
+    quantity: number;
+    image: string
+}
